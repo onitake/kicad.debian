@@ -1,3 +1,9 @@
+kicad (4.0+bzr6188-1) UNRELEASED; urgency=medium
+
+  * New upstream release candidate
+
+ -- Gregor Riepl <onitake@gmail.com>  Sun, 13 Sep 2015 13:27:29 +0200
+
 kicad (0.20141025+bzr4029-2) unstable; urgency=medium
 
   * modified the description of the package for Japanese documentation.
