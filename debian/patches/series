@@ -1,0 +1,8 @@
+fix_template~kicad.pro.patch
+docs.patch
+gcc-4.7.patch
+getting_started.patch
+fix-bashism.patch
+wx3.0-compat.patch
+version.patch
+path_to_templates.patch
