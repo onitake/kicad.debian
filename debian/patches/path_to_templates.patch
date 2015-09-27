@@ -1,14 +1,25 @@
-Index: kicad-0.20141025+bzr4029/kicad/prjconfig.cpp
+Index: kicad/kicad/prjconfig.cpp
 ===================================================================
---- kicad-0.20141025+bzr4029.orig/kicad/prjconfig.cpp
-+++ kicad-0.20141025+bzr4029/kicad/prjconfig.cpp
-@@ -89,8 +89,7 @@ void KICAD_MANAGER_FRAME::CreateNewProje
+--- kicad.orig/kicad/prjconfig.cpp
++++ kicad/kicad/prjconfig.cpp
+@@ -89,19 +89,7 @@ void KICAD_MANAGER_FRAME::CreateNewProje
          }
          else
          {
--            templatePath = wxPathOnly(wxStandardPaths::Get().GetExecutablePath()) +
+-            // The standard path should be in the share directory for kicad. As
+-            // it is normal on Windows to only have the share directory and not
+-            // the kicad sub-directory we fall back to that if the directory
+-            // doesn't exist
+-            templatePath = wxPathOnly( wxStandardPaths::Get().GetExecutablePath() ) +
+-                sep + wxT( ".." ) + sep + wxT( "share" ) + sep + wxT( "kicad" ) +
+-                sep + wxT( "template" ) + sep;
+-
+-            if( !wxDirExists( templatePath.GetFullPath() ) )
+-            {
+-                templatePath = wxPathOnly( wxStandardPaths::Get().GetExecutablePath() ) +
 -                sep + wxT( ".." ) + sep + wxT( "share" ) + sep + wxT( "template" ) + sep;
+-            }
 +            templatePath = wxPathOnly("/usr/share/kicad/template") + sep;
          }
- 
-         ps->AddPage( _( "System Templates" ), templatePath );
+ #else
+         // Use what is provided in the bundle data dir
