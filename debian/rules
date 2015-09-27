@@ -6,49 +6,44 @@ COMMONDIR = debian/kicad-common
 PKGDIR    = debian/kicad
 TMPPKGDIR = debian/tmp
 
-
 %:
 	dh $@ --parallel
 
 override_dh_clean:
 	dh_clean
+	-$(MAKE) -C kicad-i18n clean
+	-$(MAKE) -C kicad-doc clean
+	-$(MAKE) -C kicad-library clean
 	find . -type d -name CMakeFiles | xargs rm -rf
 	rm -f $(GENERATED_FILES)
-	debian/clean_sourceless_pdf
 
 override_dh_auto_configure:
-	cmake -DKICAD_STABLE_VERSION=ON -DCMAKE_BUILD_TYPE=Release .
+	cmake -DKICAD_STABLE_VERSION=ON -DCMAKE_BUILD_TYPE=Release -DKICAD_SKIP_BOOST=ON -DCMAKE_INSTALL_PREFIX=/usr .
+	cd kicad-i18n && cmake -DCMAKE_INSTALL_PREFIX=/usr .
+	cd kicad-doc && cmake -DCMAKE_INSTALL_PREFIX=/doc .
+	cd kicad-library && cmake -DCMAKE_INSTALL_PREFIX=/usr .
 
-LANG2BUILD = $(shell ls doc/doc/help| grep -v CMake)
-buildPDF:
-	for l in $(LANG2BUILD); do \
-	  for f in $$(find doc/doc/help/$$l -name "*.odm" -o -name "*.sxg"); do \
-	    target=$$(echo doc/doc/help/$$l/$$(basename $$f)| sed 's/....$$/.pdf/'); \
-	    echo -n "Compiling $$f to $${target}... "; \
-	    unoconv -f pdf $$f 2>/dev/null && mv $$(echo $$f| sed 's/....$$/.pdf/') $${target}; \
-	    echo "[Done]"; \
-	  done; \
-	done
+override_dh_build-indep:
+	$(MAKE) -C kicad-i18n
+	$(MAKE) -C kicad-doc
+	$(MAKE) -C kicad-library
+
+override_dh_auto_test-indep:
+
+override_dh_auto_install-indep:
+	$(MAKE) -C kicad-i18n DESTDIR=../$(TMPPKGDIR) install
+	$(MAKE) -C kicad-doc DESTDIR=../$(TMPPKGDIR) install
+	$(MAKE) -C kicad-library DESTDIR=../$(TMPPKGDIR) install
+
 override_dh_compress:
-	dh_compress --exclude=.pdf
+	dh_compress --exclude=.pdf --exclude=.sh
 
 override_dh_install-arch:
 	convert bitmaps_png/icons/icon_kicad.xpm -resize 32x32 debian/tmp/icon_kicad.xpm
 	dh_install
-	# fix wrong permissions and link jnlp file to usr/share
-	[ ! -d $(COMMONDIR)/usr/share/kicad/internat/ja/ ] || \
-	  chmod a-x $(COMMONDIR)/usr/share/kicad/internat/ja/*
-	ln -s ../share/kicad/freeroute.jnlp $(PKGDIR)/usr/bin
-	chmod a-x $(PKGDIR)/usr/share/kicad/freeroute.jnlp
 
 override_dh_install-indep:
-	dh_install
-	# remove out-of-topic files
-	find $(COMMONDIR)/usr/share/kicad -name "CMake*" -exec rm {} \;
-	# fix permissions for ja/kicad.po
-	find $(COMMONDIR)/usr/share/kicad -name "kicad.po" -exec chmod 644 {} \;
-	# remove useless .ps files
-	find $(COMMONDIR) -name "*.ps" | xargs rm -f
+	dh_install --exclude=CMake --exclude=.ps --exclude=.git
 
 GENERATED_FILES = ./3d-viewer/Makefile \
 	 ./3d-viewer/cmake_install.cmake \
