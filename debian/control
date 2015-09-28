@@ -5,9 +5,12 @@ Maintainer:  Georges Khaznadar <georgesk@debian.org>
 Uploaders: Richard Antony Burton <richardaburton@gmail.com>,
  Daniel J. Priem <danielpriem@flexserv.de>
 Build-Depends: debhelper (>= 9), quilt,
- cmake (>= 2.8.4), imagemagick,
+ cmake (>= 2.8.4), make, imagemagick,
  doxygen, libssl-dev, gettext, dblatex, source-highlight,
  po4a, asciidoc, libunicode-linebreak-perl, fonts-vlgothic,
+ texlive-xetex, pandoc, texlive-lang-english, texlive-lang-french,
+ texlive-lang-italian, texlive-lang-japanese,
+ texlive-lang-european, texlive-lang-polish,
  libx11-dev, libglu1-mesa-dev, libgl1-mesa-dev,
  mesa-common-dev, libwxgtk3.0-dev,
  libboost-dev, libboost-context-dev, libboost-date-time-dev,
