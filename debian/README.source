@@ -1,10 +1,9 @@
-To package the upstream source the 3 bzr repositories are extracted 
-to the same folder:
-<packaging folder>/
-<packaging folder>/doc
-<packaging folder>/library
+The KiCad source code is separated into multiple repositories.
+git-kicad.sh will fetch and package them for you.
 
-
-See get-kicad.sh, the script used to build the source package.
-
- -- Georges Khaznadar <georgesk@ofset.org>, Thu, 26 Jan 2012 08:38:35 +0100
+They are combined as follows:
+bzr export <packaging folder>/ lp:kicad/4.0
+git clone https://github.com/KiCad/kicad-i18n <packaging folder>/kicad-i18n
+git clone https://github.com/KiCad/kicad-doc <packaging folder>/kicad-doc
+git clone https://github.com/KiCad/kicad-library <packaging folder>/kicad-library
+git clone https://github.com/KiCad/*.pretty <packaging folder>/kicad-pretty/$pretty
