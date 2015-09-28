@@ -15,13 +15,14 @@ git clone https://github.com/KiCad/kicad-doc $package/doc
 echo "========== Getting the module and symbol libraries ======="
 git clone https://github.com/KiCad/kicad-library $package/library
 echo "========== Getting the footprint libraries ==============="
+mkdir -p $package/pretty
 # Use github API to list repos for org KiCad, then subset the JSON reply for only
 # *.pretty repos in the "full_name" variable.
 PRETTY_REPOS=`curl https://api.github.com/orgs/KiCad/repos?per_page=2000 2> /dev/null \
-	| sed $SED_EREGEXP 's:.+ "full_name".*"KiCad/(.+\.pretty)",:\1:p;d'`
+	| sed -E 's:.+ "full_name".*"KiCad/(.+\.pretty)",:\1:p;d'`
 PRETTY_REPOS=`echo $PRETTY_REPOS | tr " " "\n" | sort`
 SAVEIFS=$IFS
-IFS=$(echo -en "\n")
+IFS=$(echo -en "\n\b")
 for pretty in $PRETTY_REPOS; do
 	echo "Getting: $pretty"
 	git clone https://github.com/KiCad/$pretty $package/pretty/$pretty
