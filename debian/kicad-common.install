@@ -3,5 +3,5 @@ usr/share/mime usr/share
 usr/share/kicad usr/share
 usr/share/icons usr/share
 usr/share/doc usr/share
-library-repos/*.pretty /usr/share/kicad/modules
+kicad-pretty/*.pretty /usr/share/kicad/pretty
 bitmaps_png/sources/eeschema.svg usr/share/icons/hicolor/scalable/apps
