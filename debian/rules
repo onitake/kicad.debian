@@ -20,7 +20,7 @@ override_dh_clean:
 override_dh_auto_configure:
 	cmake -DKICAD_STABLE_VERSION=ON -DCMAKE_BUILD_TYPE=Release -DKICAD_SKIP_BOOST=ON -DCMAKE_INSTALL_PREFIX=/usr .
 	cd kicad-i18n && cmake -DCMAKE_INSTALL_PREFIX=/usr .
-	cd kicad-doc && cmake -DCMAKE_INSTALL_PREFIX=/doc .
+	cd kicad-doc && cmake -DCMAKE_INSTALL_PREFIX=/usr .
 	cd kicad-library && cmake -DCMAKE_INSTALL_PREFIX=/usr .
 
 override_dh_build-indep:
