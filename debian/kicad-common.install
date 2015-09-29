@@ -2,6 +2,6 @@ usr/share/mimelnk usr/share
 usr/share/mime usr/share
 usr/share/kicad usr/share
 usr/share/icons usr/share
-usr/share/doc usr/share
+usr/share/doc/kicad/scripts/*.py usr/share/doc/kicad/scripts
+usr/share/doc/kicad/scripts/bom-in-python usr/share/doc/kicad/scripts
 kicad-pretty/*.pretty /usr/share/kicad/pretty
-bitmaps_png/sources/eeschema.svg usr/share/icons/hicolor/scalable/apps
