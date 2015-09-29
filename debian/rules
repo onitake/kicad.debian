@@ -7,7 +7,7 @@ PKGDIR    = debian/kicad
 TMPPKGDIR = debian/tmp
 
 %:
-	dh $@ --parallel
+	+dh $@ --parallel
 
 override_dh_clean:
 	dh_clean
@@ -23,7 +23,7 @@ override_dh_auto_configure:
 	cd kicad-doc && cmake -DCMAKE_INSTALL_PREFIX=/usr .
 	cd kicad-library && cmake -DCMAKE_INSTALL_PREFIX=/usr .
 
-override_dh_build-indep:
+override_dh_auto_build-indep:
 	$(MAKE) -C kicad-i18n
 	$(MAKE) -C kicad-doc
 	$(MAKE) -C kicad-library
