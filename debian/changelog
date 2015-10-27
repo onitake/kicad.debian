@@ -1,6 +1,10 @@
-kicad (4.0+bzr6188-1) UNRELEASED; urgency=medium
+kicad (4.0~bzr6188-1) UNRELEASED; urgency=medium
 
+  [ Gregor Riepl ]
   * New upstream release candidate
+
+  [ Bas Wijnen ]
+  * Build out of source.
 
  -- Gregor Riepl <onitake@gmail.com>  Sun, 13 Sep 2015 13:27:29 +0200
 

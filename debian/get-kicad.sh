@@ -2,7 +2,7 @@
 
 echo "========== Getting the revision number ==================="
 revision=$(bzr log lp:kicad/4.0| head -n 2 | grep revno| awk '{print $2}')
-version=4.0+bzr$revision
+version=4.0~bzr$revision
 echo "Version: $version"
 package=kicad-$version
 origtarxz=kicad_$version.orig.tar.xz
