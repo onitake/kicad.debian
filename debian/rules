@@ -13,7 +13,7 @@ override_dh_clean:
 	dh_clean
 	find . -type d -name CMakeFiles | xargs rm -rf
 	rm -rf build .downloads-by-cmake
-	rm -f ${GENERATED}
+	rm -f $(GENERATED)
 
 override_dh_auto_configure:
 	mkdir build
