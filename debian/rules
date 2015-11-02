@@ -11,84 +11,69 @@ TMPPKGDIR = debian/tmp
 
 override_dh_clean:
 	dh_clean
-	-$(MAKE) -C kicad-i18n clean
-	-$(MAKE) -C kicad-doc clean
-	-$(MAKE) -C kicad-library clean
 	find . -type d -name CMakeFiles | xargs rm -rf
-	rm -f $(GENERATED_FILES)
+	rm -rf build .downloads-by-cmake
+	rm -f ${GENERATED}
 
 override_dh_auto_configure:
-	cmake -DKICAD_STABLE_VERSION=ON -DCMAKE_BUILD_TYPE=Release -DKICAD_SKIP_BOOST=ON -DCMAKE_INSTALL_PREFIX=/usr .
-	cd kicad-i18n && cmake -DCMAKE_INSTALL_PREFIX=/usr .
-	cd kicad-doc && cmake -DCMAKE_INSTALL_PREFIX=/usr .
-	cd kicad-library && cmake -DCMAKE_INSTALL_PREFIX=/usr .
+	mkdir build
+	mkdir build/kicad
+	cd build/kicad && cmake -DKICAD_STABLE_VERSION=ON -DCMAKE_BUILD_TYPE=Release -DKICAD_SKIP_BOOST=ON -DCMAKE_INSTALL_PREFIX=/usr ../..
+	mkdir build/i18n
+	cd build/i18n && cmake -DCMAKE_INSTALL_PREFIX=/usr ../../kicad-i18n
+	mkdir build/doc
+	cd build/doc && cmake -DCMAKE_INSTALL_PREFIX=/usr ../../kicad-doc
+	mkdir build/library
+	cd build/library && cmake -DCMAKE_INSTALL_PREFIX=/usr ../../kicad-library
 
 override_dh_auto_build-indep:
-	$(MAKE) -C kicad-i18n
-	$(MAKE) -C kicad-doc
-	$(MAKE) -C kicad-library
+	$(MAKE) -C build/i18n
+	$(MAKE) -C build/doc
+	$(MAKE) -C build/library
 
 override_dh_auto_test-indep:
 
 override_dh_auto_install-indep:
-	$(MAKE) -C kicad-i18n DESTDIR=../$(TMPPKGDIR) install
-	$(MAKE) -C kicad-doc DESTDIR=../$(TMPPKGDIR) install
-	$(MAKE) -C kicad-library DESTDIR=../$(TMPPKGDIR) install
+	$(MAKE) -C build/i18n DESTDIR=../../$(TMPPKGDIR) install
+	$(MAKE) -C build/doc DESTDIR=../../$(TMPPKGDIR) install
+	$(MAKE) -C build/library DESTDIR=../../$(TMPPKGDIR) install
 
 override_dh_compress:
 	dh_compress --exclude=.pdf --exclude=.sh
 
+override_dh_auto_build-arch:
+	$(MAKE) -C build/kicad
+
 override_dh_install-arch:
+	$(MAKE) -C build/kicad DESTDIR=../../$(TMPPKGDIR) install
 	convert bitmaps_png/icons/icon_kicad.xpm -resize 32x32 debian/tmp/icon_kicad.xpm
 	dh_install
 
 override_dh_install-indep:
 	dh_install --exclude=CMake --exclude=.ps --exclude=.git
 
-GENERATED_FILES = ./3d-viewer/Makefile \
-	 ./3d-viewer/cmake_install.cmake \
-	 ./CMakeCache.txt \
-	 ./CTestTestfile.cmake \
-	 ./DartConfiguration.tcl \
-	 ./Makefile \
-	 ./bitmap2component/Makefile \
-	 ./bitmap2component/cmake_install.cmake \
-	 ./bitmaps_png/Makefile \
-	 ./bitmaps_png/cmake_install.cmake \
-	 ./cmake_install.cmake \
-	 ./cmake_uninstall.cmake \
-	 ./common/Makefile \
-	 ./common/cmake_install.cmake \
-	 ./config.h \
-	 ./cvpcb/Makefile \
-	 ./cvpcb/cmake_install.cmake \
-	 ./demos/Makefile \
-	 ./demos/cmake_install.cmake \
-	 ./eeschema/Makefile \
-	 ./eeschema/cmake_install.cmake \
-	 ./eeschema/plugins/Makefile \
-	 ./eeschema/plugins/cmake_install.cmake \
-	 ./gerbview/Makefile \
-	 ./gerbview/cmake_install.cmake \
-	 ./kicad/Makefile \
-	 ./kicad/cmake_install.cmake \
-	 ./pcb_calculator/Makefile \
-	 ./pcb_calculator/cmake_install.cmake \
-	 ./pcbnew/Makefile \
-	 ./pcbnew/cmake_install.cmake \
-	 ./polygon/Makefile \
-	 ./polygon/cmake_install.cmake \
-	 ./polygon/kbool/src/Makefile \
-	 ./polygon/kbool/src/cmake_install.cmake \
-	 ./potrace/Makefile \
-	 ./potrace/cmake_install.cmake \
-	 ./template/Makefile \
-	 ./template/cmake_install.cmake \
-	./Testing/Temporary/CTestCostData.txt \
-	./Testing/Temporary/LastTest.log \
-	./install_manifest.txt \
-	./pcbnew/pcad2kicadpcb_plugin/Makefile \
-	./pcbnew/pcad2kicadpcb_plugin/cmake_install.cmake \
-	./tools/Makefile \
-	./tools/cmake_install.cmake \
-	./version.h
+# Even though the build is out of source, these files are generated in-source anyway.
+GENERATED = \
+	common/fp_lib_table_keywords.cpp \
+	common/gal/opengl/shader_src.h \
+	common/netlist_keywords.cpp \
+	common/page_layout/page_layout_reader_keywords.cpp \
+	common/pcb_keywords.cpp \
+	common/pcb_plot_params_keywords.cpp \
+	eeschema/cmp_library_keywords.cpp \
+	eeschema/cmp_library_lexer.h \
+	eeschema/dialogs/dialog_bom_cfg_keywords.cpp \
+	eeschema/dialogs/dialog_bom_cfg_lexer.h \
+	eeschema/dialogs/dialog_bom_help_html.h \
+	eeschema/template_fieldnames_keywords.cpp \
+	eeschema/template_fieldnames_lexer.h \
+	include/fp_lib_table_lexer.h \
+	include/netlist_lexer.h \
+	include/page_layout_reader_lexer.h \
+	include/pcb_lexer.h \
+	include/pcb_plot_params_lexer.h \
+	pcb_calculator/pcb_calculator_datafile_keywords.cpp \
+	pcb_calculator/pcb_calculator_datafile_lexer.h \
+	pcbnew/dialogs/dialog_freeroute_exchange_help_html.h \
+	pcbnew/specctra_keywords.cpp \
+	pcbnew/specctra_lexer.h

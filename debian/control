@@ -24,7 +24,7 @@ Package: kicad
 Architecture: any
 Depends: kicad-common (>= ${source:Version}),
  ${shlibs:Depends}, ${misc:Depends}
-Conflicts: kicad-common ( << 4.0)
+Conflicts: kicad-common ( << ${source:Version})
 Suggests: extra-xdg-menus,
 	kicad-doc-en | kicad-doc-fr | kicad-doc-it | kicad-doc-ja | kicad-doc-nl | kicad-doc-pl
 Description: Electronic schematic and PCB design software
@@ -52,7 +52,7 @@ Package: kicad-common
 Architecture: all
 Depends: ${misc:Depends}
 Recommends: kicad
-Replaces: kicad (<< 4.0+bzr6188-1)
+Replaces: kicad (<< ${source:Version})
 Description: Common files used by kicad
  This package contains the component libraries and language files for Kicad.
 
